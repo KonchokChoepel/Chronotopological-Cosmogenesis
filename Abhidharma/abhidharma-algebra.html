@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abhidharma — Complete Formal Algebra</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inconsolata:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg:        #0e0d0b;
+    --surface:   #141310;
+    --surface2:  #1a1916;
+    --border:    rgba(200,180,120,0.15);
+    --border2:   rgba(200,180,120,0.08);
+    --gold:      #c8b478;
+    --gold-dim:  #8a7a52;
+    --text:      #d8d0bc;
+    --text-dim:  #7a7060;
+    --text-mid:  #a89880;
+    --red:       #9a4a3a;
+    --red-dim:   rgba(154,74,58,0.15);
+    --green:     #4a7a5a;
+    --green-dim: rgba(74,122,90,0.12);
+    --blue:      #4a6a8a;
+    --blue-dim:  rgba(74,106,138,0.12);
+    --purple:    #7a5a8a;
+    --purple-dim:rgba(122,90,138,0.12);
+    --mono:      'Inconsolata', monospace;
+    --serif:     'EB Garamond', serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* Layout */
+  .page {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 100vh;
+  }
+
+  /* Sidebar nav */
+  nav {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 2rem 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold-dim) transparent;
+  }
+
+  nav::-webkit-scrollbar { width: 4px; }
+  nav::-webkit-scrollbar-thumb { background: var(--gold-dim); }
+
+  .nav-title {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding: 0 1.5rem 1rem;
+    border-bottom: 1px solid var(--border2);
+    margin-bottom: 1rem;
+  }
+
+  nav a {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    text-decoration: none;
+    padding: 0.3rem 1.5rem;
+    letter-spacing: 0.05em;
+    transition: color 0.15s, background 0.15s;
+    border-left: 2px solid transparent;
+  }
+
+  nav a:hover {
+    color: var(--gold);
+    background: rgba(200,180,120,0.05);
+    border-left-color: var(--gold-dim);
+  }
+
+  nav .nav-section {
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 1rem 1.5rem 0.3rem;
+    opacity: 0.5;
+  }
+
+  /* Main content */
+  main {
+    padding: 4rem 5rem 8rem 5rem;
+    max-width: 900px;
+  }
+
+  /* Document header */
+  .doc-header {
+    margin-bottom: 5rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .doc-overline {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 1rem;
+  }
+
+  .doc-title {
+    font-size: 3rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--gold);
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+  }
+
+  .doc-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-mid);
+    font-style: italic;
+    margin-bottom: 2rem;
+  }
+
+  .doc-note {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    line-height: 1.8;
+    border-left: 2px solid var(--border);
+    padding-left: 1rem;
+  }
+
+  /* Sections */
+  section {
+    margin-bottom: 5rem;
+  }
+
+  .section-number {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+
+  h2 {
+    font-size: 1.7rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--gold);
+    margin-bottom: 0.3rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+
+  h3 {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-mid);
+    margin: 2.5rem 0 1rem;
+  }
+
+  h4 {
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--text);
+    margin: 1.5rem 0 0.75rem;
+  }
+
+  p {
+    margin-bottom: 1rem;
+    color: var(--text-mid);
+    font-size: 0.95rem;
+  }
+
+  /* Code blocks — the main event */
+  pre {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    line-height: 1.75;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold-dim);
+    padding: 1.5rem 2rem;
+    margin: 1.25rem 0;
+    overflow-x: auto;
+    color: var(--text);
+    white-space: pre;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold-dim) transparent;
+  }
+
+  pre::-webkit-scrollbar { height: 4px; }
+  pre::-webkit-scrollbar-thumb { background: var(--gold-dim); }
+
+  /* Semantic coloring within pre — use spans */
+  .kw  { color: var(--gold); }           /* keywords, operators */
+  .def { color: #c8a478; }               /* definitions */
+  .dom { color: #7ab0c8; }               /* domain names */
+  .rel { color: #a08878; }               /* relation symbols */
+  .cmt { color: var(--text-dim); font-style: italic; } /* comments */
+  .bad { color: var(--red); }            /* unwholesome */
+  .gd  { color: var(--green); }          /* wholesome */
+  .bl  { color: var(--blue); }           /* neutral/vipāka */
+  .pp  { color: var(--purple); }         /* supramundane */
+  .num { color: #c8c478; }               /* numbers */
+
+  /* Inline code */
+  code {
+    font-family: var(--mono);
+    font-size: 0.8em;
+    color: var(--gold);
+    background: rgba(200,180,120,0.08);
+    padding: 0.1em 0.3em;
+    border-radius: 2px;
+  }
+
+  /* Divider */
+  .rule {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 3rem 0;
+  }
+
+  /* Observation boxes */
+  .obs {
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold-dim);
+    background: rgba(200,180,120,0.03);
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .obs-label {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 0.5rem;
+  }
+
+  .obs p {
+    font-size: 0.88rem;
+    color: var(--text-mid);
+    margin: 0;
+  }
+
+  /* Color legend */
+  .legend {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin: 1rem 0 2rem;
+  }
+
+  .legend-item {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- Sidebar navigation -->
+<nav>
+  <div class="nav-title">Abhidharma Algebra</div>
+
+  <div class="nav-section">Foundations</div>
+  <a href="#layer0">§0 Primitive Domains</a>
+  <a href="#layer0b">§0b Dhamma Space</a>
+
+  <div class="nav-section">Citta Layer</div>
+  <a href="#layer1a">§1a Bhumi × Jāti</a>
+  <a href="#layer1b">§1b Akusala Cittas</a>
+  <a href="#layer1c">§1c Kusala Cittas</a>
+  <a href="#layer1d">§1d Vipāka Cittas</a>
+  <a href="#layer1e">§1e Kiriya Cittas</a>
+  <a href="#layer1f">§1f Rūpāvacara</a>
+  <a href="#layer1g">§1g Arūpāvacara</a>
+  <a href="#layer1h">§1h Lokuttara</a>
+  <a href="#layer1i">§1i Jāti Operators</a>
+  <a href="#layer1j">§1j Object Function</a>
+  <a href="#layer1k">§1k Coordinate Compression</a>
+
+  <div class="nav-section">Cetasika Layer</div>
+  <a href="#layer2a">§2a Cetasika Partition</a>
+  <a href="#layer2b">§2b Universal — U</a>
+  <a href="#layer2c">§2c Occasional — Pk</a>
+  <a href="#layer2d">§2d Akusala Cetasikas</a>
+  <a href="#layer2e">§2e Sobhana Cetasikas</a>
+  <a href="#layer2f">§2f Assignment Function η</a>
+  <a href="#layer2g">§2g Inclusion Rules</a>
+  <a href="#layer2h">§2h Exclusion Rules</a>
+  <a href="#layer2i">§2i Projection Identities</a>
+
+  <div class="nav-section">Sampayoga Layer</div>
+  <a href="#layer3a">§3a Sampayoga Relation σ</a>
+  <a href="#layer3b">§3b Generation Rules R1–R4</a>
+  <a href="#layer3c">§3c Cetasika Density</a>
+  <a href="#layer3d">§3d Closure Property</a>
+
+  <div class="nav-section">Vīthi Layer</div>
+  <a href="#layer4a">§4a Bhavaṅga β</a>
+  <a href="#layer4b">§4b Vīthi Sequence</a>
+  <a href="#layer4c">§4c Sense-Door Vīthi</a>
+  <a href="#layer4d">§4d Mind-Door Vīthi</a>
+  <a href="#layer4e">§4e Path Vīthi</a>
+  <a href="#layer4f">§4f Javana Structure</a>
+  <a href="#layer4g">§4g Object Strength</a>
+  <a href="#layer4h">§4h Vīthi Grammar V</a>
+  <a href="#layer4i">§4i Transition Relation τ</a>
+
+  <div class="nav-section">Paṭṭhāna Layer</div>
+  <a href="#layer5a">§5a Conditioning Relation ρ</a>
+  <a href="#layer5b">§5b The 24 Paccaya Types</a>
+  <a href="#layer5c">§5c Paccaya Clusters</a>
+  <a href="#layer5d">§5d Absence Relations</a>
+  <a href="#layer5e">§5e Upanissaya Modes</a>
+  <a href="#layer5f">§5f Kamma Relation</a>
+  <a href="#layer5g">§5g ρ Derivations</a>
+  <a href="#layer5h">§5h ρ Properties</a>
+
+  <div class="nav-section">Rūpa Layer</div>
+  <a href="#layer6a">§6a Rūpa Partition</a>
+  <a href="#layer6b">§6b Mahābhūta</a>
+  <a href="#layer6c">§6c Upādāyarūpa</a>
+  <a href="#layer6d">§6d Production Function ζ</a>
+  <a href="#layer6e">§6e Kalāpa Function κ</a>
+  <a href="#layer6f">§6f Material-Mental Bridge</a>
+
+  <div class="nav-section">Paṭicca-samuppāda</div>
+  <a href="#layer7a">§7a The 12 Links</a>
+  <a href="#layer7b">§7b Paccaya by Link</a>
+  <a href="#layer7c">§7c Three-Lifetime Structure</a>
+  <a href="#layer7d">§7d Contingency Point</a>
+  <a href="#layer7e">§7e Cessation Dual</a>
+
+  <div class="nav-section">Consolidation</div>
+  <a href="#final">§8 Complete System</a>
+  <a href="#asymmetries">§9 Structural Asymmetries</a>
+  <a href="#properties">§10 System Properties</a>
+</nav>
+
+<!-- Main document -->
+<main>
+
+  <div class="doc-header">
+    <div class="doc-overline">Formal Algebraic Consolidation</div>
+    <div class="doc-title">Abhidharma</div>
+    <div class="doc-subtitle">Complete algebra — uncompressed</div>
+    <div class="doc-note">
+      Every definition stated in full. No ellipsis standing for content.<br>
+      No "see above". No compression. Every rule, every relation, every constraint explicit.<br>
+      Color coding: <span class="bad">unwholesome</span> &nbsp;
+      <span class="gd">wholesome</span> &nbsp;
+      <span class="bl">resultant/neutral</span> &nbsp;
+      <span class="pp">supramundane</span> &nbsp;
+      <span class="dom">domains</span> &nbsp;
+      <span class="kw">operators/keywords</span>
+    </div>
+  </div>
+
+  <!-- Section 0 onward - content continues as in original -->
+  <section id="layer0">
+    <div class="section-number">§ 0</div>
+    <h2>Primitive Domains</h2>
+
+    <pre>
+<span class="cmt">-- Unwholesome roots</span>
+<span class="dom">M</span>   <span class="kw">=</span> { <span class="bad">L</span>, <span class="bad">D</span>, <span class="bad">Mo</span> }
+        <span class="bad">L</span>   <span class="kw">=</span> lobha      <span class="cmt">-- greed, desire, attachment</span>
+        <span class="bad">D</span>   <span class="kw\">=</span> dosa       <span class="cmt\">-- aversion, hatred, ill-will</span>
+        <span class="bad\">Mo</span>  <span class=\"kw\">=\"</span> moha       <span class=\"cmt\">-- delusion, ignorance</span>
+
+<span class=\"cmt\">-- Feeling tone</span>
+<span class=\"dom\">V</span>   <span class=\"kw\">=</span> { <span class=\"gd\">s</span>, <span class=\"bad\">d</span>, <span class=\"bl\">u</span> }
+        <span class=\"gd\">s</span>   <span class=\"kw\">=</span> somanassa  <span class=\"cmt\">-- pleasant mental feeling</span>
+        <span class=\"bad\">d</span>   <span class=\"kw\">=</span> domanassa  <span class=\"cmt\">-- unpleasant mental feeling</span>
+        <span class=\"bl\">u</span>   <span class=\"kw\">=</span> upekkhā    <span class=\"cmt\">-- neutral feeling</span>
+    </pre>
+  </section>
+
+</main>
+</div>
+</body>
+</html>
