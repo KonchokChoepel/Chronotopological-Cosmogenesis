@@ -68,11 +68,6 @@ The 52 generators of the exceptional Lie Group $F_4$ act as the structural frame
 * The Dark Sector: 28 unrendered generators map to the material phenomena (Rūpas) that condense at the $T=0$ horizon.
 * Exclusion Rules: The Serre relations of the algebra dictate the psychological exclusion rules governed by the 17-moment cognitive cycle (Vīthi).
 
-------------------------------
-## 🛠️ Repository Contents
-
-* /Tractatus_Mutus.md: The core formal text detailing the spectral action formulas and algebraic mappings.
-* /Derivations: Mathematica/Python notebooks evaluating the heat kernel expansion of $\mathscr{D}_\Phi^2$ under Möbius boundary conditions.
 
 
 
