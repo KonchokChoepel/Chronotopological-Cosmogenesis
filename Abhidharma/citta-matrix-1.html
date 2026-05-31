@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Citta Matrix — Bhumi × Jāti</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inconsolata:wght@300;400&display=swap');
+
+  :root {
+    --ink: #1a1612;
+    --parchment: #f5f0e8;
+    --gold: #b8860b;
+    --gold-light: #d4a843;
+    --rust: #8b3a2a;
+    --slate: #4a5568;
+    --muted: #9a8f82;
+    --kusala: #2d5a3d;
+    --akusala: #6b2737;
+    --vipaka: #2a4a6b;
+    --kiriya: #5a3d6b;
+    --border: rgba(184,134,11,0.3);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--parchment);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', serif;
+    min-height: 100vh;
+    padding: 3rem 2rem;
+    background-image: 
+      radial-gradient(ellipse at 20% 20%, rgba(184,134,11,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(43,74,107,0.06) 0%, transparent 60%);
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  header .overline {
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  h1 {
+    font-size: 2.4rem;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .subtitle {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .divider {
+    width: 4rem;
+    height: 1px;
+    background: var(--gold);
+    margin: 1.5rem auto;
+    opacity: 0.5;
+  }
+
+  .table-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--border);
+  }
+
+  /* Axis labels */
+  .axis-label {
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0.4rem 0.75rem;
+    background: rgba(184,134,11,0.05);
+  }
+
+  /* Column headers — Jāti */
+  .jati-header {
+    padding: 1rem 1.25rem 0.75rem;
+    text-align: center;
+    border-left: 1px solid var(--border);
+    border-bottom: 2px solid var(--border);
+    background: rgba(184,134,11,0.04);
+  }
+
+  .jati-header .pali {
+    font-size: 1.15rem;
+    font-style: italic;
+    font-weight: 400;
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+
+  .jati-header .eng {
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+  }
+
+  .jati-header.akusala .pali { color: var(--akusala); }
+  .jati-header.kusala .pali  { color: var(--kusala); }
+  .jati-header.vipaka .pali  { color: var(--vipaka); }
+  .jati-header.kiriya .pali  { color: var(--kiriya); }
+
+  /* Row headers — Bhumi */
+  .bhumi-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    border-right: 2px solid var(--border);
+    background: rgba(184,134,11,0.04);
+    vertical-align: top;
+    white-space: nowrap;
+  }
+
+  .bhumi-header .pali {
+    font-size: 1.15rem;
+    font-style: italic;
+    font-weight: 400;
+    display: block;
+    color: var(--ink);
+    margin-bottom: 0.2rem;
+  }
+
+  .bhumi-header .eng {
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .bhumi-header .count {
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.7rem;
+    color: var(--gold);
+  }
+
+  /* Cells */
+  td.cell {
+    padding: 1rem 1.25rem;
+    border-left: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    text-align: center;
+    min-width: 160px;
+  }
+
+  td.cell.present {
+    background: rgba(255,255,255,0.5);
+  }
+
+  td.cell.absent {
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 4px,
+      rgba(0,0,0,0.03) 4px,
+      rgba(0,0,0,0.03) 8px
+    );
+  }
+
+  .cell-count {
+    font-family: 'Inconsolata', monospace;
+    font-size: 1.4rem;
+    font-weight: 300;
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+
+  .cell-count.akusala { color: var(--akusala); }
+  .cell-count.kusala  { color: var(--kusala); }
+  .cell-count.vipaka  { color: var(--vipaka); }
+  .cell-count.kiriya  { color: var(--kiriya); }
+
+  .cell-note {
+    font-size: 0.78rem;
+    font-style: italic;
+    color: var(--muted);
+    line-height: 1.4;
+    display: block;
+  }
+
+  .absent-mark {
+    color: var(--muted);
+    font-size: 1.2rem;
+    opacity: 0.3;
+  }
+
+  /* Total row */
+  tr.total-row td {
+    background: rgba(184,134,11,0.07);
+    border-top: 2px solid var(--border);
+    padding: 0.75rem 1.25rem;
+  }
+
+  .total-label {
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .total-num {
+    font-family: 'Inconsolata', monospace;
+    font-size: 1.1rem;
+    color: var(--gold);
+    display: block;
+    margin-top: 0.2rem;
+  }
+
+  /* Notes section */
+  .notes {
+    max-width: 900px;
+    margin: 2.5rem auto 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .note-card {
+    border-left: 2px solid var(--border);
+    padding: 0.75rem 1rem;
+  }
+
+  .note-card h3 {
+    font-size: 0.65rem;
+    font-family: 'Inconsolata', monospace;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .note-card p {
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: var(--slate);
+    line-height: 1.6;
+  }
+
+  .note-card p em {
+    font-style: italic;
+    color: var(--ink);
+  }
+
+  .grand-total {
+    max-width: 900px;
+    margin: 2rem auto 0;
+    text-align: right;
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  .grand-total span {
+    color: var(--gold);
+    font-size: 1rem;
+  }
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="overline">Abhidharma · Primary Classification</div>
+  <h1>The <em>Citta</em> Matrix</h1>
+  <p class="subtitle">Bhumi (realm) × Jāti (nature)</p>
+  <div class="divider"></div>
+</header>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <td class="axis-label">Bhumi ↓ &nbsp; Jāti →</td>
+        <th class="jati-header akusala">
+          <span class="pali">Akusala</span>
+          <span class="eng">Unwholesome</span>
+        </th>
+        <th class="jati-header kusala">
+          <span class="pali">Kusala</span>
+          <span class="eng">Wholesome</span>
+        </th>
+        <th class="jati-header vipaka">
+          <span class="pali">Vipāka</span>
+          <span class="eng">Resultant</span>
+        </th>
+        <th class="jati-header kiriya">
+          <span class="pali">Kiriya</span>
+          <span class="eng">Functional</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <!-- Kāmāvacara -->
+      <tr>
+        <th class="bhumi-header">
+          <span class="pali">Kāmāvacara</span>
+          <span class="eng">Sensuous Sphere</span>
+          <span class="count">54 cittas</span>
+        </th>
+        <td class="cell present">
+          <span class="cell-count akusala">12</span>
+          <span class="cell-note">Rooted in greed, aversion, or delusion</span>
+        </td>
+        <td class="cell present">
+          <span class="cell-count kusala">8</span>
+          <span class="cell-note">Beautiful sense-sphere wholesome</span>
+        </td>
+        <td class="cell present">
+          <span class="cell-count vipaka">23</span>
+          <span class="cell-note">Unwholesome results (7) + rootless results (8) + beautiful results (8)</span>
+        </td>
+        <td class="cell present">
+          <span class="cell-count kiriya">11</span>
+          <span class="cell-note">Rootless functional (3) + beautiful functional (8)</span>
+        </td>
+      </tr>
+
+      <!-- Rūpāvacara -->
+      <tr>
+        <th class="bhumi-header">
+          <span class="pali">Rūpāvacara</span>
+          <span class="eng">Fine-Material Sphere</span>
+          <span class="count">15 cittas</span>
+        </th>
+        <td class="cell absent">
+          <span class="absent-mark">—</span>
+        </td>
+        <td class="cell present">
+          <span class="cell-count kusala">5</span>
+          <span class="cell-note">First through fifth jhāna</span>
+        </td>
+        <td class="cell present">
+          <span class="cell-count vipaka">5</span>
+          <span class="cell-note">Jhāna resultant (rebirth in form realms)</span>
+        </td>
+        <td class="cell present">
+          <span class="cell-count kiriya">5</span>
+          <span class="cell-note">Jhāna functional (arahants only)</span>
+        </td>
+      </tr>
+
+      <!-- Arūpāvacara -->
+      <tr>
+        <th class="bhumi-header">
+          <span class="pali">Arūpāvacara</span>
+          <span class="eng">Immaterial Sphere</span>
+          <span class="count">12 cittas</span>
+        </th>
+        <td class="cell absent">
+          <span class="absent-mark">—</span>
+        </td>
+        <td class="cell present">
+          <span class="cell-count kusala">4</span>
+          <span class="cell-note">Four immaterial attainments</span>
+        </td>
+        <td class="cell present">
+          <span class="cell-count vipaka">4</span>
+          <span class="cell-note">Immaterial resultant</span>
+        </td>
+        <td class="cell present">
+          <span class="cell-count kiriya">4</span>
+          <span class="cell-note">Immaterial functional (arahants only)</span>
+        </td>
+      </tr>
+
+      <!-- Lokuttara -->
+      <tr>
+        <th class="bhumi-header">
+          <span class="pali">Lokuttara</span>
+          <span class="eng">Supramundane</span>
+          <span class="count">8 / 40 cittas</span>
+        </th>
+        <td class="cell absent">
+          <span class="absent-mark">—</span>
+        </td>
+        <td class="cell present">
+          <span class="cell-count kusala">4</span>
+          <span class="cell-note">Four path consciousnesses (magga)</span>
+        </td>
+        <td class="cell present">
+          <span class="cell-count vipaka">4</span>
+          <span class="cell-note">Four fruition consciousnesses (phala)</span>
+        </td>
+        <td class="cell absent">
+          <span class="absent-mark">—</span>
+        </td>
+      </tr>
+
+      <!-- Totals -->
+      <tr class="total-row">
+        <td><span class="total-label">Column totals</span></td>
+        <td style="text-align:center">
+          <span class="total-label">Akusala</span>
+          <span class="total-num">12</span>
+        </td>
+        <td style="text-align:center">
+          <span class="total-label">Kusala</span>
+          <span class="total-num">21 / 57</span>
+        </td>
+        <td style="text-align:center">
+          <span class="total-label">Vipāka</span>
+          <span class="total-num">36 / 52</span>
+        </td>
+        <td style="text-align:center">
+          <span class="total-label">Kiriya</span>
+          <span class="total-num">20</span>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+<div class="grand-total">
+  Total cittas (standard / expanded with jhāna subdivision): <span>89 / 121</span>
+</div>
+
+<div class="notes">
+  <div class="note-card">
+    <h3>The structural zero</h3>
+    <p><em>Akusala</em> is absent from all supramundane and jhāna realms. Unwholesomeness cannot arise in concentrated or liberated consciousness — a topological constraint, not a moral gloss.</p>
+  </div>
+  <div class="note-card">
+    <h3>Kiriya absence</h3>
+    <p><em>Kiriya</em> (functional) is absent from <em>Lokuttara</em>. Path and fruition exhaust themselves — they produce no ongoing functional residue. This is why arahants have no future rebirth.</p>
+  </div>
+  <div class="note-card">
+    <h3>89 vs 121</h3>
+    <p>The 121 count subdivides each of the 5 rūpa and 4 arūpa jhānas by the five jhāna factors, giving 40 supramundane cittas instead of 8. Same structure, finer resolution.</p>
+  </div>
+  <div class="note-card">
+    <h3>Vipāka asymmetry</h3>
+    <p>Kāmāvacara has 23 vipāka — far more than any other realm. The sensuous sphere is where kamma ripens most densely. Higher realms have only their own jhāna results.</p>
+  </div>
+</div>
+
+</body>
+</html>

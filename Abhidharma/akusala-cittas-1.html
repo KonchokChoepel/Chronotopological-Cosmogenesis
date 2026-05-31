@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Akusala Cittas — The 12 Unwholesome Consciousnesses</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inconsolata:wght@300;400;600&display=swap');
+
+  :root {
+    --ink: #1a1612;
+    --parchment: #f5f0e8;
+    --gold: #b8860b;
+    --muted: #9a8f82;
+    --border: rgba(184,134,11,0.25);
+
+    --lobha: #7a3b1e;
+    --lobha-bg: rgba(122,59,30,0.06);
+    --lobha-border: rgba(122,59,30,0.3);
+
+    --dosa: #4a1e3a;
+    --dosa-bg: rgba(74,30,58,0.06);
+    --dosa-border: rgba(74,30,58,0.3);
+
+    --moha: #1e3a4a;
+    --moha-bg: rgba(30,58,74,0.06);
+    --moha-border: rgba(30,58,74,0.3);
+
+    --pleasant: #5a7a3a;
+    --unpleasant: #7a3a4a;
+    --neutral: #4a5a7a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--parchment);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', serif;
+    min-height: 100vh;
+    padding: 3rem 1.5rem;
+    background-image:
+      radial-gradient(ellipse at 15% 15%, rgba(122,59,30,0.05) 0%, transparent 55%),
+      radial-gradient(ellipse at 85% 85%, rgba(74,30,58,0.05) 0%, transparent 55%);
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .overline {
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    line-height: 1.15;
+  }
+
+  h1 em { font-style: italic; color: var(--lobha); }
+
+  .subtitle {
+    margin-top: 0.4rem;
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .divider {
+    width: 3rem;
+    height: 1px;
+    background: var(--gold);
+    margin: 1.2rem auto 0;
+    opacity: 0.5;
+  }
+
+  /* Axes legend */
+  .axes {
+    max-width: 860px;
+    margin: 0 auto 2rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .axis-pill {
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    color: var(--muted);
+  }
+
+  /* Root sections */
+  .root-section {
+    max-width: 860px;
+    margin: 0 auto 2.5rem;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .root-header {
+    padding: 0.9rem 1.5rem;
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .root-header.lobha { background: var(--lobha-bg); border-color: var(--lobha-border); }
+  .root-header.dosa  { background: var(--dosa-bg);  border-color: var(--dosa-border); }
+  .root-header.moha  { background: var(--moha-bg);  border-color: var(--moha-border); }
+
+  .root-pali {
+    font-size: 1.4rem;
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .root-pali.lobha { color: var(--lobha); }
+  .root-pali.dosa  { color: var(--dosa); }
+  .root-pali.moha  { color: var(--moha); }
+
+  .root-eng {
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .root-count {
+    margin-left: auto;
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.75rem;
+    color: var(--gold);
+  }
+
+  /* Citta rows */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead tr {
+    background: rgba(0,0,0,0.02);
+  }
+
+  th {
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0.5rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    font-weight: 400;
+  }
+
+  th.center { text-align: center; }
+
+  td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(184,134,11,0.1);
+    vertical-align: middle;
+    font-size: 0.92rem;
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  td.num {
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.85rem;
+    color: var(--muted);
+    text-align: center;
+    width: 2.5rem;
+  }
+
+  td.citta-name {
+    font-style: italic;
+    font-size: 1rem;
+  }
+
+  td.citta-name.lobha { color: var(--lobha); }
+  td.citta-name.dosa  { color: var(--dosa); }
+  td.citta-name.moha  { color: var(--moha); }
+
+  td.vedana {
+    text-align: center;
+  }
+
+  .vedana-tag {
+    display: inline-block;
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.5rem;
+    border-radius: 2px;
+  }
+
+  .vedana-tag.pleasant   { background: rgba(90,122,58,0.12);  color: var(--pleasant); }
+  .vedana-tag.unpleasant { background: rgba(122,58,74,0.12);  color: var(--unpleasant); }
+  .vedana-tag.neutral    { background: rgba(74,90,122,0.12);  color: var(--neutral); }
+
+  td.sankharika {
+    text-align: center;
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  td.view {
+    text-align: center;
+  }
+
+  .view-tag {
+    display: inline-block;
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.5rem;
+    border-radius: 2px;
+  }
+
+  .view-tag.yes { background: rgba(122,59,30,0.1); color: var(--lobha); }
+  .view-tag.no  { color: rgba(0,0,0,0.15); }
+
+  td.notes {
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  tr:hover td { background: rgba(184,134,11,0.03); }
+
+  /* Constraint notes */
+  .constraints {
+    max-width: 860px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .constraint {
+    border-left: 2px solid var(--border);
+    padding: 0.75rem 1rem;
+  }
+
+  .constraint h3 {
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+  }
+
+  .constraint p {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: #4a5568;
+    line-height: 1.6;
+  }
+
+  .constraint p em {
+    font-style: italic;
+    color: var(--ink);
+  }
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="overline">Kāmāvacara · Akusala · 12 Cittas</div>
+  <h1>The <em>Akusala</em> Consciousnesses</h1>
+  <p class="subtitle">Classified by root (mūla) · feeling (vedanā) · spontaneity (saṅkhāra)</p>
+  <div class="divider"></div>
+</header>
+
+<div class="axes">
+  <span class="axis-pill">Root: lobha · dosa · moha</span>
+  <span class="axis-pill">Vedanā: somanassa · domanassa · upekkhā</span>
+  <span class="axis-pill">Saṅkhāra: asaṅkhārika · sasaṅkhārika</span>
+  <span class="axis-pill">Diṭṭhi: present · absent</span>
+</div>
+
+<!-- LOBHA GROUP -->
+<div class="root-section">
+  <div class="root-header lobha">
+    <span class="root-pali lobha">Lobha-mūla</span>
+    <span class="root-eng">Greed-rooted</span>
+    <span class="root-count">8 cittas</span>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:2.5rem" class="center">#</th>
+        <th>Citta</th>
+        <th class="center">Vedanā</th>
+        <th class="center">Saṅkhāra</th>
+        <th class="center">Diṭṭhi</th>
+        <th>Character</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="num">1</td>
+        <td class="citta-name lobha">Somanassa-sahagataṃ diṭṭhigata-sampayuttaṃ asaṅkhārikaṃ</td>
+        <td class="vedana"><span class="vedana-tag pleasant">Pleasant</span></td>
+        <td class="sankharika">Unprompted</td>
+        <td class="view"><span class="view-tag yes">Diṭṭhi</span></td>
+        <td class="notes">Joyful, spontaneous, with wrong view — the purest expression of lobha</td>
+      </tr>
+      <tr>
+        <td class="num">2</td>
+        <td class="citta-name lobha">Somanassa-sahagataṃ diṭṭhigata-sampayuttaṃ sasaṅkhārikaṃ</td>
+        <td class="vedana"><span class="vedana-tag pleasant">Pleasant</span></td>
+        <td class="sankharika">Prompted</td>
+        <td class="view"><span class="view-tag yes">Diṭṭhi</span></td>
+        <td class="notes">Same but requires instigation — weaker momentum</td>
+      </tr>
+      <tr>
+        <td class="num">3</td>
+        <td class="citta-name lobha">Somanassa-sahagataṃ diṭṭhigata-vippayuttaṃ asaṅkhārikaṃ</td>
+        <td class="vedana"><span class="vedana-tag pleasant">Pleasant</span></td>
+        <td class="sankharika">Unprompted</td>
+        <td class="view"><span class="view-tag no">—</span></td>
+        <td class="notes">Joyful greed without wrong view — conceit (māna) often operative here</td>
+      </tr>
+      <tr>
+        <td class="num">4</td>
+        <td class="citta-name lobha">Somanassa-sahagataṃ diṭṭhigata-vippayuttaṃ sasaṅkhārikaṃ</td>
+        <td class="vedana"><span class="vedana-tag pleasant">Pleasant</span></td>
+        <td class="sankharika">Prompted</td>
+        <td class="view"><span class="view-tag no">—</span></td>
+        <td class="notes">Prompted joyful greed without wrong view</td>
+      </tr>
+      <tr>
+        <td class="num">5</td>
+        <td class="citta-name lobha">Upekkhā-sahagataṃ diṭṭhigata-sampayuttaṃ asaṅkhārikaṃ</td>
+        <td class="vedana"><span class="vedana-tag neutral">Neutral</span></td>
+        <td class="sankharika">Unprompted</td>
+        <td class="view"><span class="view-tag yes">Diṭṭhi</span></td>
+        <td class="notes">Cool, indifferent greed with wrong view — acquisitive without excitement</td>
+      </tr>
+      <tr>
+        <td class="num">6</td>
+        <td class="citta-name lobha">Upekkhā-sahagataṃ diṭṭhigata-sampayuttaṃ sasaṅkhārikaṃ</td>
+        <td class="vedana"><span class="vedana-tag neutral">Neutral</span></td>
+        <td class="sankharika">Prompted</td>
+        <td class="view"><span class="view-tag yes">Diṭṭhi</span></td>
+        <td class="notes">Prompted neutral greed with wrong view</td>
+      </tr>
+      <tr>
+        <td class="num">7</td>
+        <td class="citta-name lobha">Upekkhā-sahagataṃ diṭṭhigata-vippayuttaṃ asaṅkhārikaṃ</td>
+        <td class="vedana"><span class="vedana-tag neutral">Neutral</span></td>
+        <td class="sankharika">Unprompted</td>
+        <td class="view"><span class="view-tag no">—</span></td>
+        <td class="notes">Neutral greed without wrong view — habitual attachment, pride</td>
+      </tr>
+      <tr>
+        <td class="num">8</td>
+        <td class="citta-name lobha">Upekkhā-sahagataṃ diṭṭhigata-vippayuttaṃ sasaṅkhārikaṃ</td>
+        <td class="vedana"><span class="vedana-tag neutral">Neutral</span></td>
+        <td class="sankharika">Prompted</td>
+        <td class="view"><span class="view-tag no">—</span></td>
+        <td class="notes">Weakest lobha-rooted citta — sluggish neutral greed, prompted</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- DOSA GROUP -->
+<div class="root-section">
+  <div class="root-header dosa">
+    <span class="root-pali dosa">Dosa-mūla</span>
+    <span class="root-eng">Aversion-rooted</span>
+    <span class="root-count">2 cittas</span>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:2.5rem" class="center">#</th>
+        <th>Citta</th>
+        <th class="center">Vedanā</th>
+        <th class="center">Saṅkhāra</th>
+        <th class="center">Diṭṭhi</th>
+        <th>Character</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="num">9</td>
+        <td class="citta-name dosa">Domanassa-sahagataṃ paṭigha-sampayuttaṃ asaṅkhārikaṃ</td>
+        <td class="vedana"><span class="vedana-tag unpleasant">Unpleasant</span></td>
+        <td class="sankharika">Unprompted</td>
+        <td class="view"><span class="view-tag no">—</span></td>
+        <td class="notes">Spontaneous aversion — anger, fear, grief arising without instigation</td>
+      </tr>
+      <tr>
+        <td class="num">10</td>
+        <td class="citta-name dosa">Domanassa-sahagataṃ paṭigha-sampayuttaṃ sasaṅkhārikaṃ</td>
+        <td class="vedana"><span class="vedana-tag unpleasant">Unpleasant</span></td>
+        <td class="sankharika">Prompted</td>
+        <td class="view"><span class="view-tag no">—</span></td>
+        <td class="notes">Aversion requiring instigation — resentment that needs to be worked up</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- MOHA GROUP -->
+<div class="root-section">
+  <div class="root-header moha">
+    <span class="root-pali moha">Moha-mūla</span>
+    <span class="root-eng">Delusion-rooted</span>
+    <span class="root-count">2 cittas</span>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:2.5rem" class="center">#</th>
+        <th>Citta</th>
+        <th class="center">Vedanā</th>
+        <th class="center">Saṅkhāra</th>
+        <th class="center">Diṭṭhi</th>
+        <th>Character</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="num">11</td>
+        <td class="citta-name moha">Upekkhā-sahagataṃ vicikicchā-sampayuttaṃ</td>
+        <td class="vedana"><span class="vedana-tag neutral">Neutral</span></td>
+        <td class="sankharika">—</td>
+        <td class="view"><span class="view-tag no">—</span></td>
+        <td class="notes">Pure delusion with doubt (vicikicchā) — paralysis, indecision, inability to commit</td>
+      </tr>
+      <tr>
+        <td class="num">12</td>
+        <td class="citta-name moha">Upekkhā-sahagataṃ uddhacca-sampayuttaṃ</td>
+        <td class="vedana"><span class="vedana-tag neutral">Neutral</span></td>
+        <td class="sankharika">—</td>
+        <td class="view"><span class="view-tag no">—</span></td>
+        <td class="notes">Pure delusion with restlessness (uddhacca) — distraction, agitation without object</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Structural constraints -->
+<div class="constraints">
+  <div class="constraint">
+    <h3>Root determines feeling</h3>
+    <p><em>Lobha</em> → pleasant or neutral only. <em>Dosa</em> → unpleasant only. <em>Moha</em> → neutral only. Feeling tone is not an independent variable — it is entailed by the root.</p>
+  </div>
+  <div class="constraint">
+    <h3>Diṭṭhi is lobha-only</h3>
+    <p>Wrong view (<em>diṭṭhi</em>) only co-arises with lobha. Aversion and delusion cannot carry wrong view. The system models cognitive distortion as structurally parasitic on desire.</p>
+  </div>
+  <div class="constraint">
+    <h3>Moha has no spontaneity axis</h3>
+    <p>The two moha cittas are not classified as prompted or unprompted. Pure delusion is structurally prior to the prompted/unprompted distinction — it underlies all 12.</p>
+  </div>
+  <div class="constraint">
+    <h3>Dosa has no view variant</h3>
+    <p>Aversion never pairs with wrong view. You cannot have doctrinally-grounded hatred in this system — hatred is always phenomenologically raw, never intellectually justified at the citta level.</p>
+  </div>
+</div>
+
+</body>
+</html>
